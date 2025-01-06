@@ -8,6 +8,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import MeanSquaredError
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score
 
 # Set random seed for reproducibility
 tf.random.set_seed(42)
@@ -57,10 +58,19 @@ target_variance = np.var(t_scaled)
 train_accuracy = max(0, 1 - (train_mse / target_variance))
 test_accuracy = max(0, 1 - (test_mse / target_variance))
 
+# Calculate R-squared for training and testing
+train_pred = model.predict(x_train)
+test_pred = model.predict(x_test)
+
+train_r2 = r2_score(t_train, train_pred)
+test_r2 = r2_score(t_test, test_pred)
+
 # Display performance metrics
 print("Test Performance (MSE):", test_mse)
 print("Adjusted Training Accuracy:", train_accuracy)
 print("Adjusted Testing Accuracy:", test_accuracy)
+print("Training R-squared:", train_r2)
+print("Testing R-squared:", test_r2)
 
 # Plot training and validation loss
 plt.figure(figsize=(8, 6))
