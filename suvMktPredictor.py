@@ -35,7 +35,7 @@ x_val, x_test, t_val, t_test = train_test_split(x_temp, t_temp, test_size=0.5, r
 hidden_layer_size = 10
 model = Sequential([
     Dense(hidden_layer_size, activation='relu', input_shape=(x_scaled.shape[1],)),
-    Dense(t_scaled.shape[1], activation='linear')
+    Dense(t_scaled.shape[1], activation='relu')
 ])
 
 # Compile the model
@@ -48,6 +48,11 @@ history = model.fit(x_train, t_train, epochs=100, batch_size=10,
 # Test the network
 y_pred = model.predict(x_test)
 performance = model.evaluate(x_test, t_test, verbose=0)
+
+# Save the trained model
+model_save_path = "suvRegMdl.keras"
+model.save(model_save_path)
+print(f"Model saved at: {model_save_path}")
 
 # Calculate training and testing adjusted accuracies
 train_mse = model.evaluate(x_train, t_train, verbose=0)[0]
